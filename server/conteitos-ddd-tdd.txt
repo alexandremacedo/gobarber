@@ -1,0 +1,45 @@
+src
+  config
+  database
+  errors
+  middlewares
+  models
+  repositories
+  routes
+  service
+
+DDD: Domain Driven Design (Metodologia)
+
+  Arquiteturas e conceitos mais praticos para o projeto:
+    Boas praticas nos projetos (Apenas backend)
+
+
+TDD: Test Driven Development
+
+  Criar testes antes de criar a funcionalidade
+    Boas praticas nos projetos (Backend e Frontend)
+
+
+
+
+Testes automatizados - jest
+
+Aplicação continue funcionando independente do numero de devs no time e de funcionalidades
+
+Tipos de teste
+
+1.Testes unitarios
+R: Testam funcionalidades expecificas da aplicação (precisam ser funcoes puras).
+Func pura -> Jamais vai fazer chamadas a uma API, não tem efeito colateral.
+
+2. Testes de integração
+R: Testam funcionalidades complatas.
+
+3. Teste E2E
+R: Simulam a ação do usuario dentro da aplicação.
+
+
+Except
+
+SCRUM: Metodologia agil - Funciona diferente para diferentes pessoas e projetos
+
