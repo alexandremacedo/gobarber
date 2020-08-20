@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 
@@ -14,7 +14,7 @@ class CreateAppointmentService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
-  ) { }
+  ) {}
 
   public async execute({
     provider_id,
@@ -22,6 +22,20 @@ class CreateAppointmentService {
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointmetDate = startOfHour(date);
+
+    if (isBefore(appointmetDate, Date.now())) {
+      throw new AppError('You can not create an appointment on past date');
+    }
+
+    if (user_id === provider_id) {
+      throw new AppError('You can not create an apoointment with yourself');
+    }
+
+    if (getHours(appointmetDate) < 8 || getHours(appointmetDate) > 17) {
+      throw new AppError(
+        'You can only create appointments between 8am and 5pm',
+      );
+    }
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmetDate,
