@@ -18,6 +18,7 @@ class CreateAppointmentService {
 
   public async execute({
     provider_id,
+    user_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointmetDate = startOfHour(date);
@@ -32,6 +33,7 @@ class CreateAppointmentService {
 
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmetDate,
     });
 
