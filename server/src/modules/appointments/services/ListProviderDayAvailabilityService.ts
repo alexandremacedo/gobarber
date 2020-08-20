@@ -15,7 +15,7 @@ type IResponse = Array<{
 }>;
 
 @injectable()
-class ListProviderMonthAvailabilityService {
+class ListProviderDayAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository,
@@ -51,7 +51,11 @@ class ListProviderMonthAvailabilityService {
       );
 
       const compareDate = new Date(year, month - 1, day, hour);
-      console.log(`${hour} | ${isAfter(compareDate, currentDate)}`);
+      console.log(
+        `${!hasAppointmentInHour} | ${isAfter(compareDate, currentDate)}`,
+      );
+
+      console.log(`${compareDate} | ${currentDate}`);
       return {
         hour,
         available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
@@ -62,4 +66,4 @@ class ListProviderMonthAvailabilityService {
   }
 }
 
-export default ListProviderMonthAvailabilityService;
+export default ListProviderDayAvailabilityService;
