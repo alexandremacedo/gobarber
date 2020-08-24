@@ -23,8 +23,6 @@ class CreateAppointmentService {
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointmetDate = startOfHour(date);
 
-    console.log(Date.now());
-
     if (isBefore(appointmetDate, Date.now())) {
       throw new AppError('You can not create an appointment on past date');
     }
