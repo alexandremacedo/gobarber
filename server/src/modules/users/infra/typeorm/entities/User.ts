@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
+import archievesUpload from '@config/archievesUpload';
 
 @Entity('users')
 class User {
@@ -34,9 +35,19 @@ class User {
 
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
-    return this.avatar
-      ? `${process.env.APP_API_URL}/files/${this.avatar}`
-      : null;
+    if (!this.avatar) {
+      return null
+    }
+
+    switch (archievesUpload.driver) {
+      case 'disk':
+        return `${process.env.APP_API_URL}/files/${this.avatar}`
+      case 's3':
+        return `https://${archievesUpload.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`
+      default:
+        return null
+    }
+
   }
 }
 
