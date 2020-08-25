@@ -18,7 +18,7 @@ interface IRequest {
 @injectable()
 class UpdateUserAvatarService {
   constructor(
-    @inject('UsersReposiroty')
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('StorageProvider')
@@ -35,7 +35,7 @@ class UpdateUserAvatarService {
       await this.storageProvider.deleteFile(user.avatar);
     }
 
-    const filename = await this.storageProvider.saveFile(avatarFilename)
+    const filename = await this.storageProvider.saveFile(avatarFilename);
 
     user.avatar = filename;
 

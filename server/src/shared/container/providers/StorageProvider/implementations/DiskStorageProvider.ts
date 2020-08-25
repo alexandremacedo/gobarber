@@ -8,7 +8,7 @@ export default class DiskStorageProvider implements IStorageProvider {
     await fs.promises.rename(
       path.resolve(archievesUpload.tmpFolder, file),
 
-      path.resolve(archievesUpload.uploadsFolder, 'uploads', file)
+      path.resolve(archievesUpload.uploadsFolder, file)
     )
 
     return file
