@@ -12,9 +12,9 @@ export default class ProfileController {
 
     const showProfile = container.resolve(ShowUserProfileService);
 
-    const user = await showProfile.execute({ user_id })
+    const user = await showProfile.execute({ user_id });
 
-    return response.json(classToClass(user))
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -31,7 +31,6 @@ export default class ProfileController {
       old_password,
       password,
     });
-
 
     return response.json(classToClass(user));
   }

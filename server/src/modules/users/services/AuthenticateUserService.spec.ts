@@ -1,8 +1,8 @@
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import AppError from '@shared/errors/AppError';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import AuthenticateUser from './AuthenticateUserService';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
-import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
@@ -13,23 +13,23 @@ describe('AuthenticateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    fakeCacheProvider = new FakeCacheProvider()
+    fakeCacheProvider = new FakeCacheProvider();
     authenticateUserService = new AuthenticateUser(
-      fakeUsersRepository, fakeHashProvider
+      fakeUsersRepository,
+      fakeHashProvider,
     );
-
-  })
+  });
 
   it('should be able to create a new authentication', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'john@gmail.com',
-      password: '123456'
+      password: '123456',
     });
 
     const auth = await authenticateUserService.execute({
       email: 'john@gmail.com',
-      password: '123456'
+      password: '123456',
     });
 
     expect(auth).toHaveProperty('token');
@@ -37,26 +37,26 @@ describe('AuthenticateUser', () => {
   });
 
   it('should not be able to authenticate', async () => {
-    await expect(authenticateUserService.execute({
-      email: 'john@gmail.com',
-      password: '123456'
-    })).rejects.toBeInstanceOf(AppError);
+    await expect(
+      authenticateUserService.execute({
+        email: 'john@gmail.com',
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
-
 
   it('should not be able to authenticate with wrong password', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'john@gmail.com',
-      password: '123456'
+      password: '123456',
     });
 
-    await expect(authenticateUserService.execute({
-      email: 'john@gmail.com',
-      password: 'wrong-password'
-    })).rejects.toBeInstanceOf(AppError);
+    await expect(
+      authenticateUserService.execute({
+        email: 'john@gmail.com',
+        password: 'wrong-password',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
-
-
-
 });

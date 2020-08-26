@@ -36,18 +36,17 @@ class User {
   @Expose({ name: 'avatar_url' })
   getAvatarUrl(): string | null {
     if (!this.avatar) {
-      return null
+      return null;
     }
 
     switch (archievesUpload.driver) {
       case 'disk':
-        return `${process.env.APP_API_URL}/files/${this.avatar}`
+        return `${process.env.APP_API_URL}/files/${this.avatar}`;
       case 's3':
-        return `https://${archievesUpload.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`
+        return `https://${archievesUpload.config.aws.bucket}.s3.amazonaws.com/${this.avatar}`;
       default:
-        return null
+        return null;
     }
-
   }
 }
 

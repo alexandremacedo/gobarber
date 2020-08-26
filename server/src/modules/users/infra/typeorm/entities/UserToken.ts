@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Generated
+  Generated,
 } from 'typeorm';
 
 @Entity('user_tokens')

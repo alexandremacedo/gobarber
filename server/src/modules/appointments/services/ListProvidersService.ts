@@ -19,17 +19,16 @@ class ListProvidersService {
   ) { }
 
   public async execute({ user_id }: IRequest): Promise<User[]> {
-
-    let users = await this.cacheProvicer.recover<User[]>(`providers-list:${user_id}`)
+    let users = await this.cacheProvicer.recover<User[]>(
+      `providers-list:${user_id}`,
+    );
 
     if (!users) {
       users = await this.usersRepository.findAllProviders({
         execept_user_id: user_id,
       });
 
-      console.log('A query fooi feita')
-
-      await this.cacheProvicer.save(`providers-list:${user_id}`, users)
+      await this.cacheProvicer.save(`providers-list:${user_id}`, users);
     }
 
     return users;

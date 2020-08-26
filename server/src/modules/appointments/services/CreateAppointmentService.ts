@@ -22,7 +22,7 @@ class CreateAppointmentService {
 
     @inject('CacheProvider')
     private cacheProvicer: ICacheProvider,
-  ) { }
+  ) {}
 
   public async execute({
     provider_id,
@@ -67,7 +67,11 @@ class CreateAppointmentService {
     });
 
     await this.cacheProvicer.invalidate(
-      `provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-d')}`)
+      `provider-appointments:${provider_id}:${format(
+        appointmentDate,
+        'yyyy-M-d',
+      )}`,
+    );
 
     return appointment;
   }

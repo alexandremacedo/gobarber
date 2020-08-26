@@ -8,22 +8,18 @@ let fakeUsersRepository: FakeUsersRepository;
 let showProfile: ShowUserProfileService;
 
 describe('UpdateUserAvatar', () => {
-
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
 
-    showProfile = new ShowUserProfileService(
-      fakeUsersRepository
-    );
-  })
+    showProfile = new ShowUserProfileService(fakeUsersRepository);
+  });
 
   it('should be able to show the profile', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'john@gmail.com',
-      password: '123456'
-    })
-
+      password: '123456',
+    });
 
     const profile = await showProfile.execute({
       user_id: user.id,
@@ -34,9 +30,10 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should not be able to show the profile of a non existing user', async () => {
-    expect(showProfile.execute({
-      user_id: 'non-existing-user-id',
-    })).rejects.toBeInstanceOf(AppError)
-  })
-
+    expect(
+      showProfile.execute({
+        user_id: 'non-existing-user-id',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
