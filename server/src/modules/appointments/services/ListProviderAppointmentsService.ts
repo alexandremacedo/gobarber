@@ -19,8 +19,7 @@ class ListProviderAppointmentsService {
     private appointmentsRepository: IAppointmentsRepository,
 
     @inject('CacheProvider')
-    private cacheProvicer: ICacheProvider,
-
+    private cacheProvider: ICacheProvider,
   ) { }
 
   public async execute({
@@ -29,19 +28,25 @@ class ListProviderAppointmentsService {
     month,
     year,
   }: IRequest): Promise<Appointment[]> {
+    const cacheKey = `provider-appointments:${provider_id}:${year}-${month}-${day}`
 
-    const cacheData = await this.cacheProvicer.recover('asd')
-    console.log(cacheData)
-    const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
-      {
-        provider_id,
-        day,
-        month,
-        year,
-      },
-    );
+    let appointments = await this.cacheProvider.recover<Appointment[]>(cacheKey)
 
-    // await this.cacheProvicer.save('asd', 'asd')
+    if (!appointments) {
+      appointments = await this.appointmentsRepository.findAllInDayFromProvider(
+        {
+          provider_id,
+          day,
+          month,
+          year,
+        },
+      );
+
+      console.log('BUSCOU DO BANCO')
+    }
+
+    await this.cacheProvider.save(cacheKey, appointments)
+
 
     return appointments;
   }
