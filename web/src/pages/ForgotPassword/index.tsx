@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 
-import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { FiLogIn, FiMail, FiLock, FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -77,7 +77,7 @@ const ForgotPassword: React.FC = () => {
           </Form>
 
           <Link to="/signin">
-            <FiLogIn />
+            <FiArrowLeft />
             Voltar ao login
           </Link>
         </AnimationContainer>
