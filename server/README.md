@@ -1,68 +1,100 @@
-# Recuperação de senha
-**RF**
+<h1 align="center">
+  <img alt="gobarber" title="gobarber" src="../.github/gobarber-icon.png" width="200px" />
+</h1>
 
-- O usuario deve poder recuperar sua senha informando seu email [  ]
-- O usuario deve poder receber um email com instruçoes de recuperacao de senha
-- O usuario deve poder resetar a senha
+<h3 align="center">
+  GoBarber server - Api for web and mobile applications
+</h3>
 
-**RNF**
+<h4 align="center">
+  NodeJS + Docker + Celebrate + Rate Limiter Flexible
+</h4>
+</br>
 
-- Utilizar mailtrap para testar envios em ambiente em desenvolvimento
-- Utilizar o Amazon SES para envios de emails em producao
-- O envio de email deve acontecer em segundo plano (background job / queue)
 
-**RN**
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/AlexandreMacedoo/gobarber?color=%2304D361">
 
-- O link enviado por email para recuperar senha para resetar senha, deve expirar em 2h
-- O usuario precisa confirmar a nova senha ao reseta-lá
+  <a href="https://github.com/AlexandreMacedoo">
+    <img alt="Made by Alexandre" src="https://img.shields.io/badge/made%20by-Alexandre-%2304D361">
+  </a>
 
-# Atualização do perfil
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
 
-**RF**
+  <a href="https://github.com/AlexandreMacedoo/gobarber/stargazers">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/AlexandreMacedoo/gobarber?style=social">
+  </a>
+</p>
 
-- O usuario deve poder atualizar seus nome, email e senha
+<p align="center">
+  <a href="#pré-requisitos">Pré requisitos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#instalação">Instalação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#license">Licença</a>
+</p>
 
-**RN**
 
-- O usuário nao pode atualizar seu email para um email ja cadastrado
-- Atualizar a senha do usuario
-  - O usuario deve informa a nova senha
-  - O usuario deve confirmar a nova senha
+# Gobarber server
+Gobarber server is an api for scheduling services build with Node.js
 
-# Painel do prestador
 
-**RF**
+## Pré requisitos
 
-- O prestador deve poder listar seus agendamentos de um dia especifico
-- O prestador deve receber uma notificação sempre que houver um novo agendamento
-- O prestador deve poder visualizar as notificações nao lidas
+- Git (https://git-scm.com/)
+- Yarn (https://yarnpkg.com/lang/en/)
+- Node (https://nodejs.org/en/)
+- Docker (https://www.docker.com/products/docker-desktop)
 
-**RNF**
+## How to use
+To clone and run this application, you'll need [Git](https://git-scm.com), [Node.js v10.16][nodejs] or higher + [Yarn v1.13][yarn] or higher installed on your computer. From your command line:
 
-- Os agendamentos do prestador devem ser armazenados em cache
-- As notificaçoes do prestador devem ser armazenadas no MongoDB
-- As notificaçòes do prestador devem ser enviadas em tempo-real utilizando Socket.io
+```bash
+# Clone this repository
+$ git clone https://github.com/AlexandreMacedoo/gobarber.git
 
-**RN**
+# Go into the repository
+$ cd gobarber/server
 
-- A notificação deve ter um status de lida ou nao lida
+# Install all dependencies
+$ yarn
 
-# Agendamento de serviços
+# With docker up
+$ docker run --name postgres_gobarber -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+$ docker run --name mongo_gobarber -p 27017:27017 -d -t mongo
+$ docker run --name redis_gobarber -p 6379:6379 -d -t redis:alpine
 
-**RF**
+# Start database
+$ yarn docker:start
 
-- O usuario deve listar todos os prestadores de serviço cadastrados
-- O usuario deve poder listar os dias de um mes com pelo menos um horario disponivel de um prestador
-- O usuario deve poder listar horarios disponiveis em um dia especifico de um prestador
-- O usuario deve poder realizar um novo agendamento com um prestador
+# Running migrations
+$ yarn typeorm migrate:run
 
-**RNF**
+# Start the server
+$ yarn dev:server
 
-- A listagem de prestadores deve ser armazenada em cache
+# Server is running at http://localhost:3333
+```
 
-**RN**
+## Endpoints
+Routes:
 
-- Cada agendamento deve durar 1h exatamente;
-- Os agendamentos devem estar disponiveis entre 8h as 18h (Primeiro as 8h, ultimo as 19h)
-- O usuario nao pode agendar em um horario ja ocupado
-- O usuario nao pode agendar em um horario que ja passou consigo
+Method | Endpoint | Controller | Action | Authentication
+--- | --- | --- | --- | ---
+POST   | /sessions                        | \src\modules\users\infra\http\controllers\SessionController                         | store      | no
+POST   | /password/forgot                 | \src\modules\users\infra\http\controllers\ForgotPasswordController                  | store      | no
+POST   | /password/reset                  | \src\modules\users\infra\http\controllers\ResetPasswordController                   | store      | no
+POST   | /users                           | \src\modules\users\infra\http\controllers\UsersController                           | store      | no
+PATCH  | /users/avatar                    | \src\modules\users\infra\http\controllers\UserAvatarController                      | update     | yes
+PUT    | /profile                         | \src\modules\users\infra\http\controllers\ProfileController                         | update     | yes
+GET    | /profile                         | \src\modules\users\infra\http\controllers\ProfileController                         | list one   | yes
+POST   | /appointments                    | \src\modules\appointements\infra\http\controllers\AppointmentsController            | store      | yes
+POST   | /appointments/me                 | \src\modules\appointements\infra\http\controllers\ProviderAppointmentsController    | list all   | yes
+GET    | /providers                       | \src\modules\appointements\infra\http\controllers\ProvidersController               | list all   | yes
+GET    | /providers/:id/month-avaiability | \src\modules\appointements\infra\http\controllers\ProviderDayAvailabilityController | list all   | yes
+GET    | /providers/:id/month-avaiability | \src\modules\appointements\infra\http\controllers\ProviderDayAvailabilityController | list all   | yes
+
+
+## Doc API
+- Soon
+
+[nodejs]: https://nodejs.org/
+[yarn]: https://yarnpkg.com/
