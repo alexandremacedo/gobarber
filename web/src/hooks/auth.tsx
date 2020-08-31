@@ -35,7 +35,6 @@ const AuthProvider: React.FC = ({ children }) => {
       return { token, user: JSON.parse(user) };
     }
 
-
     return {} as AuthState;
   });
 
