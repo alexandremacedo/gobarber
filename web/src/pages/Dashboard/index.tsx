@@ -5,7 +5,7 @@ import logo from '../../assets/logo.svg'
 import { FiPower, FiClock } from 'react-icons/fi';
 import { useAuth } from '../../hooks/auth';
 
-import { format, isToday } from 'date-fns'
+import { format, isToday, parseISO } from 'date-fns'
 
 import ptBR from 'date-fns/locale/pt-BR'
 
@@ -21,6 +21,7 @@ interface MonthAvailabilityItem {
 interface Appointments {
   id: string;
   date: string;
+  hourFormatted: string;
   user: {
     name: string;
     avatar_url: string;
@@ -57,6 +58,24 @@ const Dashboard: React.FC = () => {
     })
   }, [currentMonth, user.id])
 
+  useEffect(() => {
+    api.get<Appointments[]>('/appointments/me', {
+      params: {
+        year: selectedDate.getFullYear(),
+        month: selectedDate.getMonth() + 1,
+        day: selectedDate.getDate(),
+      }
+    }).then(response => {
+      const appointmentsFormatted = response.data.map(appointment => {
+        return {
+          ...appointment,
+          hourFormatted: format(parseISO(appointment.date), 'HH:mm')
+        }
+      })
+      setAppointments(appointmentsFormatted)
+    })
+  }, [selectedDate])
+
   const disabledDays = useMemo(() => {
     const dates = monthAvailability
       .filter(monthDay => monthDay.available === false)
@@ -82,17 +101,17 @@ const Dashboard: React.FC = () => {
     })
   }, [selectedDate])
 
-  useEffect(() => {
-    api.get('/appointments/me', {
-      params: {
-        year: selectedDate.getFullYear(),
-        month: selectedDate.getMonth() + 1,
-        day: selectedDate.getDate(),
-      }
-    }).then(response => {
-      setAppointments(response.data)
+  const morningAppointments = useMemo(() => {
+    return appointments.filter(appointment => {
+      return parseISO(appointment.date).getHours() < 12
     })
-  }, [selectedDate])
+  }, [appointments])
+
+  const afternoonAppointments = useMemo(() => {
+    return appointments.filter(appointment => {
+      return parseISO(appointment.date).getHours() >= 12
+    })
+  }, [appointments])
 
   return (
     <Container>
@@ -137,48 +156,37 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Manhã</strong>
 
-            <Appointment>
-              <span>
-                <FiClock></FiClock>
-                08:00
-              </span>
+            {morningAppointments.map(appointment => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock></FiClock>
+                  {appointment.hourFormatted}
+                </span>
+                <div>
+                  <img src={appointment.user.avatar_url} alt={appointment.user.name} />
 
-              <div>
-                <img src={user.avatar_url} alt={user.name} />
-
-                <strong>Alexandre Macedo</strong>
-              </div>
-            </Appointment>
-
-            <Appointment>
-              <span>
-                <FiClock></FiClock>
-                08:00
-              </span>
-
-              <div>
-                <img src={user.avatar_url} alt={user.name} />
-
-                <strong>Alexandre Macedo</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
 
           <Section>
             <strong>Tarde</strong>
 
-            <Appointment>
-              <span>
-                <FiClock></FiClock>
-                08:00
-              </span>
+            {afternoonAppointments.map(appointment => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock></FiClock>
+                  {appointment.hourFormatted}
+                </span>
+                <div>
+                  <img src={appointment.user.avatar_url} alt={appointment.user.name} />
 
-              <div>
-                <img src={user.avatar_url} alt={user.name} />
-
-                <strong>Alexandre Macedo</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
         </Schedule>
 
