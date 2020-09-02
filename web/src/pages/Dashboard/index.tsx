@@ -13,6 +13,7 @@ import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css'
 import api from '../../services/api';
 import { parse } from 'path';
+import { Link } from 'react-router-dom';
 
 interface MonthAvailabilityItem {
   day: number;
@@ -131,7 +132,7 @@ const Dashboard: React.FC = () => {
             <img src={user.avatar_url} alt={user.name}></img>
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile"><strong>{user.name}</strong></Link>
             </div>
           </Profile>
           <button type="button" onClick={signOut}>
