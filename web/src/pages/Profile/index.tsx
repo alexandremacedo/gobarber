@@ -16,9 +16,11 @@ import { useToast } from '../../hooks/toast';
 import { useAuth } from '../../hooks/auth';
 
 interface ProfileFormData {
-  nome: string;
-  emali: string;
+  name: string;
+  email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
@@ -28,44 +30,65 @@ const Profile: React.FC = () => {
 
   const { user, updateUser } = useAuth()
 
-  const handleSubmit = useCallback(async (data: ProfileFormData) => {
-    try {
-      formRef.current?.setErrors({});
-      const schema = Yup.object().shape({
-        name: Yup.string().required('Nome obrigatório'),
-        email: Yup.string()
-          .required('Email obrigatório')
-          .email('Digite um email válido'),
-        password: Yup.string().min(6, 'No mínimo 6 dígitos'),
-      });
-      await schema.validate(data, {
-        abortEarly: false,
-      });
+  const handleSubmit = useCallback(
+    async (data: ProfileFormData) => {
+      try {
+        formRef.current?.setErrors({});
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('Email obrigatório')
+            .email('Digite um email válido'),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: val => !!val.length,
+            then: Yup.string().required().min(6, 'Minimo 6 digitos'),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string().when('old_password', {
+            is: val => !!val.length,
+            then: Yup.string().required(),
+            otherwise: Yup.string()
+          }).oneOf([Yup.ref('password'), undefined], 'As senhas não coincidem')
+        });
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-      await api.post('/users', data);
+        const { name, email, old_password, password, password_confirmation } = data
 
-      history.push('/signin');
+        const formData = Object.assign({
+          name,
+          email,
+        }, old_password ? {
+          old_password,
+          password,
+          password_confirmation,
+        } : {})
 
-      addToast({
-        type: 'success',
-        title: 'Cadastro realizado!',
-        description: 'Seja, bem vindo!',
-      });
-    } catch (err) {
-      if (err instanceof Yup.ValidationError) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+        const response = await api.put('/profile', formData);
 
-        return;
+        updateUser(response.data)
+
+        addToast({
+          type: 'success',
+          title: 'Perfil atualizado!',
+        });
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na atualização',
+          description: 'Ocorreu um erro ao atualizar perfil, tente novamente',
+        });
       }
-
-      addToast({
-        type: 'error',
-        title: 'Erro no cadastro',
-        description: 'Ocorreu um erro no cadastro, tente novamente',
-      });
-    }
-  }, []);
+    }, []);
 
   const handleAvatarChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
 
