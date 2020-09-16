@@ -18,6 +18,7 @@ import { FormHandles } from '@unform/core';
 
 import * as Yup from 'yup'
 import getValidationErrors from '../../utils/getValidatioErrors';
+import api from '../../services/api';
 
 interface SignUpFormData {
   name: string;
@@ -47,9 +48,15 @@ const SignUp: React.FC = () => {
         abortEarly: false,
       });
 
-      // await api.post('/users', data);
+      console.log(data)
 
-      // history.push('/signin');
+      await api.post('/users', data);
+
+      Alert.alert('Cadastro realizado com sucesso!',
+        'Você já pode fazer login na aplicação.'
+      )
+
+      navigation.goBack()
 
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -91,7 +98,8 @@ const SignUp: React.FC = () => {
                 placeholder="Nome"
                 onSubmitEditing={() => {
                   emailInputRef.current?.focus()
-                }}></Input>
+                }} />
+
               <Input
                 ref={emailInputRef}
                 keyboardType="email-address"
@@ -103,7 +111,8 @@ const SignUp: React.FC = () => {
                 placeholder="Email"
                 onSubmitEditing={() => {
                   passwordInputRef.current?.focus()
-                }}></Input>
+                }} />
+
               <Input
                 ref={passwordInputRef}
                 secureTextEntry
@@ -112,7 +121,7 @@ const SignUp: React.FC = () => {
                 onSubmitEditing={() => formRef.current?.submitForm()}
                 name="password"
                 icon="lock"
-                placeholder="Senha"></Input>
+                placeholder="Senha" />
 
             </Form>
             <Button onPress={() => formRef.current?.submitForm()}>Entrar</Button>
@@ -128,7 +137,6 @@ const SignUp: React.FC = () => {
           Voltar para logon
         </BackToSignInText>
       </BackToSignIn>
-
     </>
   )
 }
