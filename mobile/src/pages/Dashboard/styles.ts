@@ -47,8 +47,7 @@ export const UserAvatar = styled.Image`
 export const ProvidersList = styled(
   FlatList as new () => FlatList<Provider>
 )`
-
-  padding: 30px 15px 16px;
+  padding: 30px 15px 0;
 
 `;
 
