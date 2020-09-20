@@ -1,47 +1,40 @@
 import styled from 'styled-components/native';
-import { getBottomSpace } from 'react-native-iphone-x-helper'
+import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { Platform } from 'react-native'
 
 export const Container = styled.View`
   flex: 1;
-  align-items: center;
-  justify-content: center;
-  padding: 0 20px ${Platform.OS === 'android' ? 160 : 40}px;
+
 `;
+export const Header = styled.View`
+  padding: 24px;
+  padding-top: ${Platform.OS === 'ios' ? `${getStatusBarHeight() + 24}px` : '24px'};
+  background: #28262e;
 
-export const Title = styled.Text`
-  font-size: 20px;
-  color: #f4ede8;
-  margin: 64px 0 24px;
-`;
-
-
-export const ForgotPassword = styled.Text`
-  margin-top: 24px;
-`;
-
-export const ForgotPasswordText = styled.Text`
-  color: #f4ede8;
-  font-size: 16px;
-`;
-
-export const CreateAccountButton = styled.TouchableOpacity`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: #312e38;
-  border-top-width: 1px;
-  border-color: #232129;
-  padding: 16px 0 ${16 + getBottomSpace()}px;
-
-  justify-content: center;
-  align-items: center;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-export const CreateAccountButtonText = styled.Text`
-  color: #ff9000;
-  font-size: 17px;
-  margin-left: 16px;
+export const HeaderTitle = styled.Text`
+  color: #999591;
+  font-size: 18px;
+  line-height: 28px;
 `;
+
+export const UserName = styled.Text`
+  color: #ff9000;
+  font-weight: bold;
+`;
+
+export const ProfileButton = styled.TouchableOpacity`
+
+`;
+
+export const UserAvatar = styled.Image`
+  width: 56px;
+  height: 56px;
+  background: #fff;
+  border-radius: 28px;
+`;
+
