@@ -1,6 +1,13 @@
 import styled from 'styled-components/native';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper'
 import { Platform } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler';
+
+interface Provider {
+  id: string;
+  name: string;
+  avatar_url: string;
+}
 
 export const Container = styled.View`
   flex: 1;
@@ -34,7 +41,13 @@ export const ProfileButton = styled.TouchableOpacity`
 export const UserAvatar = styled.Image`
   width: 56px;
   height: 56px;
-  background: #fff;
   border-radius: 28px;
 `;
 
+export const ProvidersList = styled(
+  FlatList as new () => FlatList<Provider>
+)`
+
+
+
+`;
