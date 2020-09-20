@@ -1,3 +1,6 @@
+
+<img alt="Mockup" src="https://res.cloudinary.com/eliasgcf/image/upload/v1587509596/GoBarber/mockup_ocggit.png">
+
 # gobarber
 This is an application build with Node.js + ReactJS + React Naitve + TypeScript
 

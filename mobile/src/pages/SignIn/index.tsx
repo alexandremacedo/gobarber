@@ -36,8 +36,6 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation()
   const { signIn, user } = useAuth()
 
-  console.log(user)
-
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
       try {
