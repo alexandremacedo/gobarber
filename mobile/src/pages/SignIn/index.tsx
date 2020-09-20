@@ -36,6 +36,9 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation()
   const { signIn, user } = useAuth()
 
+
+  // console.log(user)
+
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
       try {
@@ -55,8 +58,6 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password,
         });
-
-        // history.push('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
