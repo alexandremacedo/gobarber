@@ -12,6 +12,16 @@ interface ProviderNameProps {
   selected: boolean;
 }
 
+interface HourProps {
+  available: boolean;
+  hour: boolean;
+}
+
+
+interface HourTextProps {
+  selected: boolean;
+}
+
 export const Container = styled.View`
   flex: 1;
 `;
@@ -101,3 +111,40 @@ export const OpenDatePickerButtonText = styled.Text`
   font-size: 16px;
   color: #232129;
 `;
+
+
+export const Schedule = styled.View`
+  padding: 24px 0 16px;
+`;
+
+export const Section = styled.View`
+  margin-bottom: 24px;
+`;
+
+export const SectionTitle = styled.Text`
+  font-size: 18px;
+  color: #999591;
+  margin: 0 24px 12px;
+`;
+
+export const SectionContent = styled.ScrollView.attrs({
+  contentContainerStyle: { paddingHorizontal: 24 },
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+})``;
+
+export const Hour = styled(RectButton) <HourProps>`
+  padding: 12px 15px;
+  background: ${(props) => (props.selected ? '#ff9000' : '#3e3b47')};
+  border-radius: 8px;
+  margin-right: 8px;
+
+  opacity: ${(props) => (props.available ? 1 : 0.3)};
+`;
+
+export const HourText = styled.Text<HourTextProps>`
+  color: ${(props) => (props.selected ? '#232129' : '#f4ede8')};
+  font-size: 15px;
+`;
+
+export const Content = styled.ScrollView``;
