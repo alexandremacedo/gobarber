@@ -112,6 +112,7 @@ export const OpenDatePickerButtonText = styled.Text`
   color: #232129;
 `;
 
+export const Content = styled.ScrollView``;
 
 export const Schedule = styled.View`
   padding: 24px 0 16px;
@@ -147,4 +148,17 @@ export const HourText = styled.Text<HourTextProps>`
   font-size: 15px;
 `;
 
-export const Content = styled.ScrollView``;
+export const CreateAppointmentButton = styled(RectButton)`
+  height: 50px;
+  background: #ff9000;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 24px 24px;
+`;
+
+export const CreateAppointmentButtonText = styled.Text`
+font-weight: bold;
+  font-size: 16px;
+  color: #232129;
+`;
