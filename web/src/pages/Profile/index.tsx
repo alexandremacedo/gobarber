@@ -34,6 +34,7 @@ const Profile: React.FC = () => {
     async (data: ProfileFormData) => {
       try {
         formRef.current?.setErrors({});
+
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
           email: Yup.string()
@@ -51,6 +52,7 @@ const Profile: React.FC = () => {
             otherwise: Yup.string()
           }).oneOf([Yup.ref('password'), undefined], 'As senhas não coincidem')
         });
+
         await schema.validate(data, {
           abortEarly: false,
         });
