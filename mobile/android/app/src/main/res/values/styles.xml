@@ -3,7 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:textColor">#000000</item>
+        <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+       <!-- Used for the buttons -->
+        <item name="colorAccent">#ff9000</item>
+    </style>
     </style>
 
 </resources>
